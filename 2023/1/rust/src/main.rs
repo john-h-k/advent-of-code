@@ -25,8 +25,7 @@ fn first_digit_or_word(line: &[u8], mut indices: impl Iterator<Item = usize>) ->
     indices.find_map(|s| {
         WORD_MAP
             .iter()
-            .find(|(word, _)| line[s..].starts_with(word.as_bytes()))
-            .map(|p| p.1)
+            .find_map(|(word, value)| line[s..].starts_with(word.as_bytes()).then_some(*value))
     })
 }
 
