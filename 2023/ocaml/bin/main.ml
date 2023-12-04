@@ -71,7 +71,7 @@ let () =
     | 1 -> (module Ocaml.Day1 : Day)
     | 2 -> (module Ocaml.Day2 : Day)
     | 3 -> (module Ocaml.Day3 : Day)
-    (*| 4 -> (module Ocaml.Day4 : Day)*)
+    | 4 -> (module Ocaml.Day4 : Day)
     | _ -> failwith (Printf.sprintf "day %d not implemented" day)
   in
   run_day day_module lines
