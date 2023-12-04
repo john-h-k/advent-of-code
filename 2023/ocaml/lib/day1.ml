@@ -104,3 +104,4 @@ let arr = map_file first_and_last_digit "input.txt" in
   let sum = sum_list (remove_nones arr) in
     print_int sum
 ;;
+
