@@ -1,4 +1,3 @@
-open Core
 
 let reverse str = 
   let rec loop idx = match idx with
@@ -9,18 +8,19 @@ let reverse str =
 
 let digit_word str idx =
   let words = ["one"; "two"; "three"; "four"; "five"; "six"; "seven"; "eight"; "nine"] in
-  let str = String.sub str ~pos:idx ~len:(String.length str - idx) in
+  let str = String.sub str idx (String.length str - idx) in
+    let _ = Printf.printf "%s\n" str in
     let opt_word i word = 
-      if String.is_substring_at str ~pos:0 ~substring:word then
+      if String.starts_with ~prefix:word str then
         Some (i + 1)
       else
         None
     in
   
-    let matches = List.filter_map ~f:Fun.id (List.mapi ~f:opt_word words) in
+    let matches = List.filter_map Fun.id (List.mapi opt_word words) in
       match matches with
         [] -> None
-        | item :: _rest -> Some item
+        | item :: rest -> Some item
 ;;
 
 let first_digit_or_word str =
@@ -59,7 +59,7 @@ let first_digit str =
     if idx < String.length str then
       let c = str.[idx] in
         match c with
-          '0' .. '9' -> Some (int_of_string (String.make 1 c))
+          '0' .. '9' -> Some (c, idx)
           | _ -> loop (idx + 1)
     else
       None
@@ -67,16 +67,8 @@ let first_digit str =
   in loop 0
 ;;
 
+
 let first_and_last_digit str =
-  let first = first_digit str in
-    let second = first_digit (reverse str) in
-      match first, second with
-        Some first, Some second -> Some (first * 10 + second)
-        | _ -> None
-;;
-
-
-let first_and_last_digit_or_word str =
   let first = first_digit_or_word str in
     let second = last_digit_or_word str in
       match first, second with
@@ -84,14 +76,32 @@ let first_and_last_digit_or_word str =
         | _ -> None
 ;;
 
-open Utils
+let map_file fn path =
+  let f = open_in path in
+    let rec loop () =
+      try
+        let next = input_line f in
+        fn(next) :: loop ()
+      with End_of_file ->
+        close_in f;
+        []
+    in loop ()
+;;
 
-let part1 lines =
-  let arr = List.map ~f:first_and_last_digit lines in
-    let sum = sum_list (remove_nones arr) in
-      Printf.sprintf "%d\n" sum
+let option_to_int = function
+  | None -> 0
+  | Some s -> s
+;;
 
-let part2 lines =
-  let arr = List.map ~f:first_and_last_digit_or_word lines in
-    let sum = sum_list (remove_nones arr) in
-      Printf.sprintf "%d\n" sum
+let remove_nones l = List.map option_to_int l;;
+
+let rec sum_list = function
+  [] -> 0
+  | head :: tail -> head + (sum_list tail)
+;;
+
+let arr = map_file first_and_last_digit "input.txt" in
+  let sum = sum_list (remove_nones arr) in
+    print_int sum
+;;
+

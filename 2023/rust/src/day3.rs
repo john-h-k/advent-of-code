@@ -83,7 +83,7 @@ impl Day for Day3 {
 
                     let value: u32 = str::from_utf8(&line[j..j + last]).unwrap().parse().unwrap();
 
-                    if let Some((b'*', x, y)) = touches_symbol(&lines, i, j, last) {
+                    if let Some((b'*', x, y)) = touches_symbol(lines, i, j, last) {
                         gears.entry((x, y)).or_insert(Vec::new()).push(value);
                     }
                 } else if !c.is_ascii_digit() {
