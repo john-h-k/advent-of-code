@@ -50,7 +50,7 @@ let rec sum_list_opt = function
   | Some(head) :: tail -> head + (sum_list_opt tail)
 ;;
 
-let arr = map_file parse_game "input.txt" in
+let arr = map_file parse_game "test.txt" in
   let sum = sum_list_opt arr in
     print_int sum
 ;;
