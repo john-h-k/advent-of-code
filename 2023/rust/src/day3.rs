@@ -1,4 +1,4 @@
-use crate::Day;
+use crate::{Day, TestInput};
 
 use std::{collections::HashMap, str};
 
@@ -37,6 +37,10 @@ fn touches_symbol(lines: &[String], i: usize, j: usize, last: usize) -> Option<(
 
 pub struct Day3;
 impl Day for Day3 {
+    fn date() -> (i32, i32) {
+        (2023, 3)
+    }
+
     fn part1(lines: &[String]) -> String {
         let mut val = 0;
 
@@ -99,5 +103,40 @@ impl Day for Day3 {
         }
 
         format!("{val}")
+    }
+
+    fn test_inputs() -> (TestInput, TestInput) {
+        return (
+            TestInput {
+                input: "
+                    467..114..
+                    ...*......
+                    ..35..633.
+                    ......#...
+                    617*......
+                    .....+.58.
+                    ..592.....
+                    ......755.
+                    ...$.*....
+                    .664.598..
+                ",
+                result: "4361",
+            },
+            TestInput {
+                input: "
+                    467..114..
+                    ...*......
+                    ..35..633.
+                    ......#...
+                    617*......
+                    .....+.58.
+                    ..592.....
+                    ......755.
+                    ...$.*....
+                    .664.598..
+                ",
+                result: "467835",
+            },
+        );
     }
 }

@@ -6,7 +6,7 @@ use std::{
 
 use itertools::{chain, Itertools};
 
-use crate::Day;
+use crate::{Day, TestInput};
 
 pub struct Day5;
 
@@ -73,6 +73,10 @@ fn location_for_seed(seed: isize, maps: &[SeedMap]) -> isize {
 // }
 
 impl Day for Day5 {
+    fn date() -> (i32, i32) {
+        (2023, 5)
+    }
+
     fn part1(lines: &[String]) -> String {
         let (_, seeds) = lines[0].split_once(':').unwrap();
         let seeds = seeds.split(' ').filter_map(|s| s.parse::<isize>().ok());
@@ -112,62 +116,98 @@ impl Day for Day5 {
             maps.push(map);
         }
 
-        // maps.reverse();
-        // for map in maps.iter_mut() {
-        //     *map = map
-        //         .iter()
-        //         .map(|(src, (src_range, dest_range))| {
-        //             (dest_range.start, (dest_range.clone(), src_range.clone()))
-        //         })
-        //         .collect();
-        // }
-
-        // let seed_map = seeds
-        //     .iter()
-        //     .tuples()
-        //     .map(|(&first, &len)| (first, first..(first + len)))
-        //     .collect::<BTreeMap<_, _>>();
         let seed_ranges = seeds
             .iter()
             .tuples()
             .map(|(&first, &len)| first..(first + len));
 
-        // let (&min_loc, (dest, len)) = maps[0].first_key_value().unwrap();
-        // maps[0].insert(0, (0..min_loc, 0..min_loc));
-
-        // let result = maps[0]
-        //     .iter()
-        //     .flat_map(|(_, (src_range, dest_range))| {
-        //         src_range.clone().map(|loc| {
-        //             println!("testing loc {loc}");
-        //             let a = (loc, location_for_seed(loc, &maps));
-        //             println!("had seed {}", a.1);
-        //             a
-        //         })
-        //     })
-        //     .filter(|(loc, seed)| {
-        //         seed_map
-        //             .upper_bound(Bound::Included(&seed))
-        //             .value()
-        //             .is_some_and(|v| v.contains(&seed))
-        //     })
-        //     .map(|(loc, seed)| loc)
-        //     .min()
-        //     .unwrap();
-
         let result = seed_ranges
-            .flat_map(|range| {
-                range.map(|seed| {
-                    // println!("testing seed {seed}");
-                    let a = (seed, location_for_seed(seed, &maps));
-                    // println!("had loc {}", a.1);
-                    a
-                })
-            })
+            .flat_map(|range| range.map(|seed| (seed, location_for_seed(seed, &maps))))
             .map(|(seed, loc)| loc)
             .min()
             .unwrap();
 
         format!("{result}")
+    }
+
+    fn test_inputs() -> (TestInput, TestInput) {
+        return (
+            TestInput {
+                input: "
+                    seeds: 79 14 55 13
+
+                    seed-to-soil map:
+                    50 98 2
+                    52 50 48
+
+                    soil-to-fertilizer map:
+                    0 15 37
+                    37 52 2
+                    39 0 15
+
+                    fertilizer-to-water map:
+                    49 53 8
+                    0 11 42
+                    42 0 7
+                    57 7 4
+
+                    water-to-light map:
+                    88 18 7
+                    18 25 70
+
+                    light-to-temperature map:
+                    45 77 23
+                    81 45 19
+                    68 64 13
+
+                    temperature-to-humidity map:
+                    0 69 1
+                    1 0 69
+
+                    humidity-to-location map:
+                    60 56 37
+                    56 93 4
+                    ",
+                result: "35",
+            },
+            TestInput {
+                input: "
+                    seeds: 79 14 55 13
+
+                    seed-to-soil map:
+                    50 98 2
+                    52 50 48
+
+                    soil-to-fertilizer map:
+                    0 15 37
+                    37 52 2
+                    39 0 15
+
+                    fertilizer-to-water map:
+                    49 53 8
+                    0 11 42
+                    42 0 7
+                    57 7 4
+
+                    water-to-light map:
+                    88 18 7
+                    18 25 70
+
+                    light-to-temperature map:
+                    45 77 23
+                    81 45 19
+                    68 64 13
+
+                    temperature-to-humidity map:
+                    0 69 1
+                    1 0 69
+
+                    humidity-to-location map:
+                    60 56 37
+                    56 93 4
+                ",
+                result: "46",
+            },
+        );
     }
 }

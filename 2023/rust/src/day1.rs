@@ -1,6 +1,6 @@
 use std::{iter::Rev, ops::Range};
 
-use crate::Day;
+use crate::{Day, TestInput};
 
 fn first_digit(line: &[u8], mut indices: impl Iterator<Item = usize>) -> Option<i32> {
     indices.find_map(|s| {
@@ -59,6 +59,10 @@ where
 
 pub struct Day1;
 impl Day for Day1 {
+    fn date() -> (i32, i32) {
+        (2023, 1)
+    }
+
     fn part1(lines: &[String]) -> String {
         format!("{}", find_digits(lines, first_digit, first_digit))
     }
@@ -68,5 +72,31 @@ impl Day for Day1 {
             "{}",
             find_digits(lines, first_digit_or_word, first_digit_or_word)
         )
+    }
+
+    fn test_inputs() -> (TestInput, TestInput) {
+        return (
+            TestInput {
+                input: "
+                    1abc2
+                    pqr3stu8vwx
+                    a1b2c3d4e5f
+                    treb7uchet
+                ",
+                result: "142",
+            },
+            TestInput {
+                input: "
+                    two1nine
+                    eightwothree
+                    abcone2threexyz
+                    xtwone3four
+                    4nineeightseven2
+                    zoneight234
+                    7pqrstsixteen
+                ",
+                result: "281",
+            },
+        );
     }
 }
