@@ -10,8 +10,6 @@ use crate::{Day, TestInput};
 pub struct Day5;
 
 type SeedMap = BTreeMap<isize, (Range<isize>, Range<isize>)>;
-type OrderedMappings = BTreeMap<usize, Mapping>;
-
 fn build_map(lines: &mut &[String]) -> Option<SeedMap> {
     if lines.is_empty() {
         return None;
@@ -41,6 +39,7 @@ fn build_map(lines: &mut &[String]) -> Option<SeedMap> {
     Some(map)
 }
 
+type OrderedMappings = BTreeMap<usize, Mapping>;
 fn build_map_as_mappings(lines: &mut &[String]) -> Option<OrderedMappings> {
     if lines.is_empty() {
         return None;
@@ -183,8 +182,6 @@ fn merge_ranges_to_map(ranges: Vec<Range<usize>>, second: OrderedMappings) -> Ve
                     continue;
                 };
 
-                dbg!(&next_mapping, &range);
-                dbg!(overlap_type(&range, &next_mapping.to_range()));
                 let constrained = next_mapping.constrained_by(&range);
 
                 if let Some(constrained) = constrained {
