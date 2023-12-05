@@ -1,10 +1,9 @@
 use std::{
-    collections::{BTreeMap, HashMap, HashSet},
-    mem,
+    collections::BTreeMap,
     ops::{Bound, Range},
 };
 
-use itertools::{chain, Itertools};
+use itertools::Itertools;
 
 use crate::{Day, TestInput};
 
@@ -22,7 +21,7 @@ fn build_map(lines: &mut &[String]) -> Option<SeedMap> {
 
     let map = lines
         .iter()
-        .take_while(|l| l.chars().next().is_some_and(|c| c.is_digit(10)))
+        .take_while(|l| l.chars().next().is_some_and(|c| c.is_ascii_digit()))
         .map(|l| {
             let [dest, src, len] = l.split(' ').map(|s| s.parse().unwrap()).collect::<Vec<_>>()[..] else {
                 panic!("bad input!");
@@ -81,7 +80,7 @@ impl Day for Day5 {
         let (_, seeds) = lines[0].split_once(':').unwrap();
         let seeds = seeds.split(' ').filter_map(|s| s.parse::<isize>().ok());
 
-        let mut head = 2;
+        let _head = 2;
 
         let mut maps = Vec::new();
 
@@ -106,7 +105,7 @@ impl Day for Day5 {
             .filter_map(|s| s.parse::<isize>().ok())
             .collect::<Vec<_>>();
 
-        let mut head = 2;
+        let _head = 2;
 
         let mut maps = Vec::new();
 
@@ -123,7 +122,7 @@ impl Day for Day5 {
 
         let result = seed_ranges
             .flat_map(|range| range.map(|seed| (seed, location_for_seed(seed, &maps))))
-            .map(|(seed, loc)| loc)
+            .map(|(_seed, loc)| loc)
             .min()
             .unwrap();
 
@@ -131,7 +130,7 @@ impl Day for Day5 {
     }
 
     fn test_inputs() -> (TestInput, TestInput) {
-        return (
+        (
             TestInput {
                 input: "
                     seeds: 79 14 55 13
@@ -208,6 +207,6 @@ impl Day for Day5 {
                 ",
                 result: "46",
             },
-        );
+        )
     }
 }

@@ -106,7 +106,7 @@ impl Day for Day3 {
     }
 
     fn test_inputs() -> (TestInput, TestInput) {
-        return (
+        (
             TestInput {
                 input: "
                     467..114..
@@ -137,6 +137,6 @@ impl Day for Day3 {
                 ",
                 result: "467835",
             },
-        );
+        )
     }
 }

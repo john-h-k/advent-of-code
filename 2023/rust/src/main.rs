@@ -1,7 +1,7 @@
 #![feature(btree_cursors)]
 #![feature(let_chains)]
 
-use std::env;
+use std::{env, time::Instant};
 
 use chrono::{self, Datelike, NaiveDate};
 use clap::Parser;
@@ -75,7 +75,7 @@ fn main() {
         return;
     }
 
-    let (year, mut day) = year_and_day();
+    let (year, day) = year_and_day();
     println!("Today is the {} of December {year}\n", day_str(day));
 
     let days = if args.all {
@@ -103,10 +103,10 @@ fn run_day_from_date(args: &Args, day: i32) -> Result<(), ()> {
         3 => run_day::<Day3>,
         4 => run_day::<Day4>,
         5 => run_day::<Day5>,
-        day => Err(())?,
+        _day => Err(())?,
     };
 
-    run_day(&args);
+    run_day(args);
     Ok(())
 }
 
@@ -185,16 +185,19 @@ fn real_inputs<Day: crate::Day>() -> (Input, Input) {
 }
 
 fn run_part(Input { lines, result }: Input, f: impl Fn(&[String]) -> String) {
-    let part1_result = f(&lines[..]);
+    let start = Instant::now();
+    let part_result = f(&lines[..]);
+    let elapsed = Instant::now() - start;
 
-    println!("Result: {part1_result}");
+    println!("Took {elapsed:?}");
+    println!("Result: {part_result}");
 
     let Some(result) = result else {
         return
     };
 
-    if result != part1_result {
-        println!("ERROR! Expected result '{result}' but got '{part1_result}'")
+    if result != part_result {
+        println!("ERROR! Expected result '{result}' but got '{part_result}'")
     } else {
         println!("Test passed!")
     }
