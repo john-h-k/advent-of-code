@@ -3,12 +3,13 @@ open Core
 let discrim a b c = (b *. b) -. (4.0 *. a *. c)
 
 let quad_solve a b c =
+  let open Float.O in
   let d = discrim a b c in
-  if Float.compare d 0.0 < 0
+  if d < 0.0
   then None
   else (
     let root_d = Float.sqrt d in
-    Some ((-.b +. root_d) /. (2.0 *. a), (-.b -. root_d) /. (2.0 *. a)))
+    Some ((-b + root_d) / (2.0 * a), (-b - root_d) / (2.0 * a)))
 ;;
 
 let float_is_int f =
