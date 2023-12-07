@@ -82,21 +82,23 @@ impl Day for Day7 {
                 (hand.replace('J', "1"), bid.parse::<usize>().unwrap())
             })
             .sorted_by_key(|(hand, _bid)| {
-                dbg!(hand);
                 let hand_ty = hand_type(hand.as_bytes());
                 let joker_count = hand.bytes().filter(|c| *c == b'1').count();
 
-                dbg!(joker_count, hand_ty);
-                let hand_ty = match (joker_count, hand_ty) {
-                    (_, HandType::FullHouse) if joker_count > 0 => HandType::FiveOfKind,
-                    (_, HandType::FourOfKind) if joker_count > 0 => HandType::FiveOfKind,
-                    (_, HandType::ThreeOfKind) if joker_count > 0 => HandType::FourOfKind,
-                    (2, HandType::TwoPair) => HandType::FullHouse,
-                    (1, HandType::TwoPair) => HandType::FullHouse,
-                    (1, HandType::OnePair) => HandType::ThreeOfKind,
-                    _ => hand_ty,
+                let hand_ty = if joker_count == 0 {
+                    hand_ty
+                } else {
+                    match hand_ty {
+                        HandType::FullHouse => HandType::FiveOfKind,
+                        HandType::FourOfKind => HandType::FiveOfKind,
+                        HandType::ThreeOfKind => HandType::FourOfKind,
+                        HandType::TwoPair if joker_count == 2 => HandType::FourOfKind,
+                        HandType::TwoPair => HandType::FullHouse,
+                        HandType::OnePair => HandType::ThreeOfKind,
+                        HandType::HighCard => HandType::OnePair,
+                        _ => hand_ty,
+                    }
                 };
-                dbg!(hand_ty);
 
                 let values: Hand = hand.bytes().map(card_value).collect_tuple().unwrap();
 
