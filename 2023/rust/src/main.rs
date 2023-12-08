@@ -1,4 +1,5 @@
 #![feature(btree_cursors)]
+#![feature(drain_filter)]
 #![feature(let_chains)]
 
 use std::{env, time::Instant};
@@ -7,6 +8,7 @@ use chrono::{self, Datelike, NaiveDate};
 use clap::Parser;
 use day6::Day6;
 use day7::Day7;
+use day8::Day8;
 
 use crate::{day1::Day1, day2::Day2, day3::Day3, day4::Day4, day5::Day5};
 
@@ -47,6 +49,7 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 
 fn day_str(day: i32) -> String {
     let suffix = match day % 10 {
@@ -109,6 +112,7 @@ fn run_day_from_date(args: &Args, day: i32) -> Result<(), ()> {
         5 => run_day::<Day5>,
         6 => run_day::<Day6>,
         7 => run_day::<Day7>,
+        8 => run_day::<Day8>,
         _day => Err(())?,
     };
 
