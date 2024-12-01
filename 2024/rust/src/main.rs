@@ -1,21 +1,17 @@
-#![feature(btree_cursors)]
-#![feature(drain_filter)]
-#![feature(let_chains)]
-
 use std::{env, time::Instant};
 
 use crate::{
-    day1::Day1, day2::Day2, day3::Day3, day4::Day4, day5::Day5, day6::Day6, day7::Day7, day8::Day8,
-    day9::Day9,
+    day1::Day1, // day2::Day2, day3::Day3, day4::Day4, day5::Day5, day6::Day6, day7::Day7, day8::Day8,
+                // day9::Day9,
 };
 use chrono::{self, Datelike, NaiveDate};
 use clap::Parser;
-use day10::Day10;
-use day11::Day11;
-use day12::Day12;
-use day14::Day14;
-use day15::Day15;
-use day17::Day17;
+// use day10::Day10;
+// use day11::Day11;
+// use day12::Day12;
+// use day14::Day14;
+// use day15::Day15;
+// use day17::Day17;
 
 fn year_and_day() -> (i32, i32) {
     let now = chrono::offset::Local::now().date_naive();
@@ -48,21 +44,21 @@ trait Day {
 }
 
 mod day1;
-mod day10;
-mod day11;
-mod day12;
-mod day14;
-mod day15;
-mod day16;
-mod day17;
-mod day2;
-mod day3;
-mod day4;
-mod day5;
-mod day6;
-mod day7;
-mod day8;
-mod day9;
+// mod day10;
+// mod day11;
+// mod day12;
+// mod day14;
+// mod day15;
+// mod day16;
+// mod day17;
+// mod day2;
+// mod day3;
+// mod day4;
+// mod day5;
+// mod day6;
+// mod day7;
+// mod day8;
+// mod day9;
 
 fn day_str(day: i32) -> String {
     let suffix = match day % 10 {
@@ -119,20 +115,20 @@ fn main() {
 fn run_day_from_date(args: &Args, day: i32) -> Result<(), ()> {
     let run_day = match day {
         1 => run_day::<Day1>,
-        2 => run_day::<Day2>,
-        3 => run_day::<Day3>,
-        4 => run_day::<Day4>,
-        5 => run_day::<Day5>,
-        6 => run_day::<Day6>,
-        7 => run_day::<Day7>,
-        8 => run_day::<Day8>,
-        9 => run_day::<Day9>,
-        10 => run_day::<Day10>,
-        11 => run_day::<Day11>,
-        12 => run_day::<Day12>,
-        14 => run_day::<Day14>,
-        15 => run_day::<Day15>,
-        17 => run_day::<Day17>,
+        // 2 => run_day::<Day2>,
+        // 3 => run_day::<Day3>,
+        // 4 => run_day::<Day4>,
+        // 5 => run_day::<Day5>,
+        // 6 => run_day::<Day6>,
+        // 7 => run_day::<Day7>,
+        // 8 => run_day::<Day8>,
+        // 9 => run_day::<Day9>,
+        // 10 => run_day::<Day10>,
+        // 11 => run_day::<Day11>,
+        // 12 => run_day::<Day12>,
+        // 14 => run_day::<Day14>,
+        // 15 => run_day::<Day15>,
+        // 17 => run_day::<Day17>,
         _day => Err(())?,
     };
 
@@ -222,9 +218,7 @@ fn run_part(Input { lines, result }: Input, f: impl Fn(&[String]) -> String) {
     println!("Took {elapsed:?}");
     println!("Result: {part_result}");
 
-    let Some(result) = result else {
-        return
-    };
+    let Some(result) = result else { return };
 
     if result != part_result {
         println!("ERROR! Expected result '{result}' but got '{part_result}'")
